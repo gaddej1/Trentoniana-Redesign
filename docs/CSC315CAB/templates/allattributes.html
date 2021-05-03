@@ -17,9 +17,17 @@
     </header>
     <h2>All of the Attributes</h2>
 
-    <table>
+    <table border = "1">
         <!-- nested for loops in jinja template -->
         <h4>Recording Attributes</h4>
+        <td>Recording Title</td> 
+        <td>Audio File Link</td> 
+        <td>Interviewer Name</td> 
+        <td>Year Recorded</td> 
+        <td>Date Published</td> 
+        <td>Family Business?</td> 
+        <td>Description</td> 
+
         {%for row in recordingAttributes%}
         <tr>
             {%for col in row%}
@@ -28,8 +36,13 @@
         </tr>
         {%endfor%}
     </table>
-
+    <table border = "1">
         <h4>Speaker Attributes</h4>
+        <td>Speaker ID</td> 
+        <td>Name</td> 
+        <td>Gender</td> 
+        <td>Race</td> 
+        <td>Is Jewish?</td>
         {%for row in speakerAttributes%}
         <tr>
             {%for col in row%}
@@ -37,14 +50,16 @@
             {%endfor%}
         </tr>
         {%endfor%}
-    <table>
-        <table>
+    </table>
 
+    <table border = "1">
         <h4>Transcript Attributes</h4>
+        <td>Transcript ID</td>
+        <td>Transcript Text</td>
         <tr>
-        {{transcriptID}}
+        <td>{{transcriptID}}</td>
+        <td><a href="{{ url_for('transcript') }}">Transcript Text</a></td>
         </tr>
-        <a href="{{ url_for('transcript') }}">Transcript Text</a>
     </table>
 
 </body></html>

@@ -29,7 +29,12 @@
     <p>{{description}}</p>
     <p>{{publicationDes}}{{publicationDate}}</p>
     <p>{{yearDes}}{{yearRecorded}}</p>
-
+    
+    <p>{{topicDes}}{%for row in topic%}
+        {%for col in row%}
+        {{col}} 
+        {%endfor%}
+    {%endfor%} </p>
     </center>
 
 

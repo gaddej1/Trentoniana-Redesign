@@ -255,6 +255,56 @@ def filter():
         query = "SELECT Recording_title FROM RECORDING WHERE Year_recorded = " + year3 + ";"
         years = years + connect(query)
         yearSel = True
+    year4 = request.form.get('year4')
+    if year4 != None:
+        query = "SELECT Recording_title FROM RECORDING WHERE Year_recorded = " + year4 + ";"
+        years = years + connect(query)
+        yearSel = True
+    year5 = request.form.get('year5')
+    if year5 != None:
+        query = "SELECT Recording_title FROM RECORDING WHERE Year_recorded = " + year5 + ";"
+        years = years + connect(query)
+        yearSel = True
+    year6 = request.form.get('year6')
+    if year6 != None:
+        query = "SELECT Recording_title FROM RECORDING WHERE Year_recorded = " + year6 + ";"
+        years = years + connect(query)
+        yearSel = True
+    year7 = request.form.get('year7')
+    if year7 != None:
+        query = "SELECT Recording_title FROM RECORDING WHERE Year_recorded = " + year7 + ";"
+        years = years + connect(query)
+        yearSel = True
+    year8 = request.form.get('year8')
+    if year8 != None:
+        query = "SELECT Recording_title FROM RECORDING WHERE Year_recorded = " + year8 + ";"
+        years = years + connect(query)
+        yearSel = True
+    year9 = request.form.get('year9')
+    if year9 != None:
+        query = "SELECT Recording_title FROM RECORDING WHERE Year_recorded = " + year9 + ";"
+        years = years + connect(query)
+        yearSel = True
+    year10 = request.form.get('year10')
+    if year10 != None:
+        query = "SELECT Recording_title FROM RECORDING WHERE Year_recorded = " + year10 + ";"
+        years = years + connect(query)
+        yearSel = True
+    year11 = request.form.get('year11')
+    if year11 != None:
+        query = "SELECT Recording_title FROM RECORDING WHERE Year_recorded = " + year11 + ";"
+        years = years + connect(query)
+        yearSel = True
+    year12 = request.form.get('year12')
+    if year12 != None:
+        query = "SELECT Recording_title FROM RECORDING WHERE Year_recorded = " + year12 + ";"
+        years = years + connect(query)
+        yearSel = True
+    year13 = request.form.get('year13')
+    if year13 != None:
+        query = "SELECT Recording_title FROM RECORDING WHERE Year_recorded = " + year13 + ";"
+        years = years + connect(query)
+        yearSel = True
 
     # Example query for filtering by topic:    
     # SELECT Recording_title
@@ -460,9 +510,12 @@ def all_attributes():
     
     #query = "SELECT Recording_title FROM RECORDING WHERE Recording_title % '" + request.form['searchRecording'] + "';"
 
-    query1 = "SELECT * FROM SEL WHERE Recording_title % '" + request.form['t1title'] + "';"
-    query2 = "SELECT Speaker_number, Name, Gender, Nationality, Is_jewish FROM REC_INTERVIEW NATURAL JOIN SPEAKER WHERE Recording_title % '" + request.form['t1title'] + "';"
-    query3 = "SELECT Transcript_ID, Transcript_text FROM REC_HASTRANS NATURAL JOIN TRANSCRIPT WHERE Recording_title % '" + request.form['t1title'] + "';"
+    recordingTitle = request.form['t1title']
+    recordingTitle = recordingTitle.replace("'", "''")
+
+    query1 = "SELECT * FROM SEL WHERE Recording_title % '" + recordingTitle + "';"
+    query2 = "SELECT Speaker_number, Name, Gender, Nationality, Is_jewish FROM REC_INTERVIEW NATURAL JOIN SPEAKER WHERE Recording_title % '" + recordingTitle + "';"
+    query3 = "SELECT Transcript_ID, Transcript_text FROM REC_HASTRANS NATURAL JOIN TRANSCRIPT WHERE Recording_title % '" + recordingTitle + "';"
     
     #run all the queries and get the attributes
     recordingAttributes = connect(query1)
@@ -543,7 +596,7 @@ def add_transcript():
     recording = request.form['t3title']
     
     #read from the file
-    recording.replace("'", "''")
+    recording = recording.replace("'", "''")
     textFile = open("" + text_file + "", "r")
     fileContent = textFile.read()
     textFile.close()
@@ -560,6 +613,31 @@ def add_transcript():
         addTranscriptMessage = "Insert failed"
         
     return render_template('superuser.html', addTranscriptMessage=addTranscriptMessage)
+
+#Add a topic/category tuple to the relation
+#Implemented by Nicole
+@app.route('/add-topic', methods=['POST'])
+def add_topic():
+    #get all of the attributes
+    recording = request.form['t20title']
+    topic = request.form['t20topic']
+
+    #replace ' with ''
+    recording = recording.replace("'", "''")
+    topic = topic.replace("'", "''")
+
+    #make and run the query and get the returned key
+    query = "INSERT INTO TOPIC_OR_CATEGORY(Recording_title, Topic_or_category_name) VALUES('" + recording + "', '" + topic + "') RETURNING Recording_title;"
+
+    returnedKey = connect2(query)
+
+    #return a message regarding whether or not the insertion was successful
+    if returnedKey != "":
+        addTopicMessage = "Insert successful!"
+    else:
+        addTopicMessage = "Insert failed"
+        
+    return render_template('superuser.html', addTopicMessage=addTopicMessage)
 
 #Add a speaker tuple to the relation
 #Implemented by Nicole
@@ -622,7 +700,7 @@ def add_superuser():
 @app.route('/del-recording', methods = ['POST'])
 def del_recording():
     recording = request.form['t5title']
-    recording.replace("'", "''")
+    recording = recording.replace("'", "''")
     query = "DELETE FROM Recording WHERE Recording_title = '" + recording + "';"
     returnedNumDeletions = connect3(query)
     if returnedNumDeletions > 0:
@@ -632,14 +710,36 @@ def del_recording():
     
     return render_template('superuser.html', delRecordingMessage=delRecordingMessage)
 
+#Delete a speaker topic/ category from the relation
+#Implemented by Anthony   
+@app.route('/del-topic', methods = ['POST'])
+def del_topic():
+    tName = request.form['t49name']
+    tRec = request.form['t49rec']
+    tName = tName.replace("'", "''") 
+    tRec = tRec.replace("'", "''")
+    query = "DELETE FROM TOPIC_OR_CATEGORY WHERE Recording_title = '" + tRec + "' AND Topic_or_category_name = '"+ tName +"';"
+    returnedNumDeletions = connect3(query)
+    if returnedNumDeletions > 0:
+        delTopicMessage = "Deletion successful!"
+    else:
+        delTopicMessage = "Deletion failed"
+
+    return render_template('superuser.html', delTopicMessage=delTopicMessage)
+
 #Delete a transcript tuple from the relation
 #Implemented by Anthony
 @app.route('/del-transcript', methods = ['POST'])
 def del_transcript():
     transcriptID = request.form['t6ID']
-    transcriptID.replace("'", "''") #probably wont need this but just to be safe
+    transcriptID = transcriptID.replace("'", "''") #probably wont need this but just to be safe
+    
     query = "DELETE FROM TRANSCRIPT WHERE Transcript_ID = '" + transcriptID + "';"
+    query2 = "DELETE FROM HAS_TRANSCRIPT WHERE Transcript_ID = '" + transcriptID + "';"
+    
     returnedNumDeletions = connect3(query)
+    returnedNumDeletions2 = connect3(query2)
+
     if returnedNumDeletions > 0:
         delTranscriptMessage = "Deletion successful!"
     else:
@@ -651,21 +751,27 @@ def del_transcript():
 @app.route('/del-speaker', methods = ['POST'])
 def del_speaker():
     speakerNum = request.form['t7num']
-    speakerNum.replace("'", "''") #probably wont need this but just to be safe
+    speakerNum = speakerNum.replace("'", "''") #probably wont need this but just to be safe
+    
     query = "DELETE FROM SPEAKER WHERE Speaker_number = " + speakerNum + ";"
+    query2 = "DELETE FROM INTERVIEW_WITH WHERE Speaker_number = " + speakerNum + ";"
+    
     returnedNumDeletions = connect3(query)
+    returnedNumDeletions2 = connect3(query2)
+
     if returnedNumDeletions > 0:
         delSpeakerMessage = "Deletion successful!"
     else:
         delSpeakerMessage = "Deletion failed"
     return render_template('superuser.html', delSpeakerMessage=delSpeakerMessage)
 
+
 #Delete a superuser tuple from the relation
 #Implemented by Anthony
 @app.route('/del-superuser', methods = ['POST'])
 def del_superuser():
     sUser = request.form['t50name']
-    sUser.replace("'", "''") #probably wont need this but just to be safe
+    sUser = sUser.replace("'", "''") #probably wont need this but just to be safe
     query = "DELETE FROM SUPERUSER WHERE Username = '" + sUser + "';"
     returnedNumDeletions = connect3(query)
     if returnedNumDeletions > 0:
@@ -681,6 +787,12 @@ def del_superuser():
 @app.route('/recording/', methods=['POST'])
 def recording():
     recording = request.form.get('recording')
+    recording = recording.replace("'", "''")
+    #If the user didn't select a recording, just reset the page
+    if recording == None:
+        query = "SELECT Recording_title FROM RECORDING;"
+        rows = connect(query)
+        return render_template('index.html', rows=rows)
     recordingTitle = recording
     '''
     SELECT Audio_file
@@ -704,13 +816,17 @@ def recording():
     pubDate = connect(query)
     query = "SELECT Year_recorded FROM RECORDING WHERE Recording_title % '" + recording + "';"
     yearRec = connect(query)
+    query = "SELECT Topic_or_category_name FROM TOPIC_OR_CATEGORY WHERE Recording_title % '" + recording + "';"
+    top = connect(query)
 
     #Set all of the values to be returned to what they are
     description = ""
     publicationDate = ""
     yearRecorded = ""
+    topic = ""
     publicationDes = ""
     yearDes = ""
+    topicDes = ""
 
     if des:
         description = "Description: " + des[0][0]
@@ -720,6 +836,9 @@ def recording():
     if yearRec:
         yearRecorded = yearRec[0][0]
         yearDes = "Year Recorded: "
+    if top:
+        topic = top
+        topicDes = "Topics/Categories: "
 
     if transcriptFile:
         transcriptFile[0][0].replace("\\n", "\n")
@@ -730,7 +849,7 @@ def recording():
         text_file = open("transcript.txt", "w")
         n = text_file.write("No transcript exists for this recording")
         text_file.close() 
-    return render_template('recording.html', recordingTitle=recordingTitle, audioFile=audioFile, description=description, publicationDate=publicationDate, yearRecorded=yearRecorded, publicationDes=publicationDes, yearDes=yearDes)
+    return render_template('recording.html', recordingTitle=recordingTitle, audioFile=audioFile, description=description, topic=topic, publicationDate=publicationDate, yearRecorded=yearRecorded, publicationDes=publicationDes, yearDes=yearDes, topicDes=topicDes)
 
 #Update recording tuple in relation
 #Implemented by Lakaylah
@@ -842,9 +961,9 @@ def update_transcript():
     newTID = request.form.get('t9nID')
     text_file = request.form.get('t9file')
 
-    oldTID.replace("'", "''")
-    newTID.replace("'", "''")
-    text_file.replace("'", "''")
+    oldTID = oldTID.replace("'", "''")
+    newTID = newTID.replace("'", "''")
+    text_file = text_file.replace("'", "''")
 
     exists = [False] * 3
 
@@ -899,8 +1018,8 @@ def update_speaker():
     spNationality = request.form.get('t10nat')
     spIsJewish = request.form.get('t10jew')
 
-    spName.replace("'", "''")
-    spNationality.replace("'", "''")
+    spName = spName.replace("'", "''")
+    spNationality = spNationality.replace("'", "''")
 
     exists = [False] * 5
 
