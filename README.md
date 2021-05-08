@@ -38,4 +38,4 @@ There is also a link on the home page that will take you to a superuser login pa
 
 ## License:
 
-[Click Here](https://github.com/TCNJ-degoodj/stage-v-group-2/blob/main/OpenSourceLicense)
+[Click Here](https://github.com/gaddej1/Trentoniana-Redesign/blob/main/OpenSourceLicense)
