@@ -18,8 +18,11 @@ The objective of this project was to redesign both the database of interview rec
 Download PostgreSQL: https://www.postgresql.org/download/
 
 Download CSC315CAB
+
 Download UpdatedStageVPopulate.sql
+
 Download UpdatedStage5DropFile.sql
+
 Install Flask: Instructions located in the app.py file within the CSC315CAB folder
 
 ## How to Run:
