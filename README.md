@@ -9,7 +9,7 @@ Trentoniana Redesign Project
 CSC315 & HON270
 
 
-Project Description:
+**Project Description:**
 
 The objective of this project was to redesign both the database of interview recordings associated with the Trentoniana website as well as the site itself. At the time the project was assigned, the Trentoniana site and database were extremely dated and not efficient to work with. The project is a combination of our own PostgreSQL database combined with an HTML and CSS front end, connected together using Python-based Flask. The project combines better filtering, a more approachable interface, and ease of data access to provide an objectively better browsing experience than the one currently implemented on Trentoniana.
 
